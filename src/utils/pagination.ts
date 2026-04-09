@@ -10,6 +10,7 @@ export interface PaginationOptions {
   keywords?: string;
   tags?: string[];
   createdFrom?: string; // Date in YYYY-MM-DD format
+  state?: string;
   limit: number;
 }
 
@@ -36,6 +37,7 @@ export async function fetchAllNotes(
     const response = await client.fetchNotes({
       term: keywords,
       createdFrom: options.createdFrom,
+      state: options.state,
       pageCursor: pageCursor || undefined,
     });
 

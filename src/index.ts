@@ -17,6 +17,21 @@ import {
   fetchNotesDescription,
   executeFetchNotes,
 } from "./tools/fetchNotes.js";
+import {
+  searchFeaturesInputSchema,
+  searchFeaturesDescription,
+  executeSearchFeatures,
+} from "./tools/searchFeatures.js";
+import {
+  createFeatureInputSchema,
+  createFeatureDescription,
+  executeCreateFeature,
+} from "./tools/createFeature.js";
+import {
+  linkNoteToFeatureInputSchema,
+  linkNoteToFeatureDescription,
+  executeLinkNoteToFeature,
+} from "./tools/linkNoteToFeature.js";
 
 // Initialize API client
 let apiClient: ProductBoardApiClient;
@@ -61,6 +76,108 @@ server.registerTool(
           {
             type: "text",
             text: `Error fetching notes: ${
+              error instanceof Error ? error.message : String(error)
+            }`,
+          },
+        ],
+        isError: true,
+      };
+    }
+  }
+);
+
+// Register search_features tool
+server.registerTool(
+  "search_features",
+  {
+    description: searchFeaturesDescription,
+    inputSchema: searchFeaturesInputSchema,
+  },
+  async (params) => {
+    try {
+      const result = await executeSearchFeatures(apiClient, params);
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(result, null, 2),
+          },
+        ],
+      };
+    } catch (error) {
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Error searching features: ${
+              error instanceof Error ? error.message : String(error)
+            }`,
+          },
+        ],
+        isError: true,
+      };
+    }
+  }
+);
+
+// Register create_feature tool
+server.registerTool(
+  "create_feature",
+  {
+    description: createFeatureDescription,
+    inputSchema: createFeatureInputSchema,
+  },
+  async (params) => {
+    try {
+      const result = await executeCreateFeature(apiClient, params);
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(result, null, 2),
+          },
+        ],
+      };
+    } catch (error) {
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Error creating feature: ${
+              error instanceof Error ? error.message : String(error)
+            }`,
+          },
+        ],
+        isError: true,
+      };
+    }
+  }
+);
+
+// Register link_note_to_feature tool
+server.registerTool(
+  "link_note_to_feature",
+  {
+    description: linkNoteToFeatureDescription,
+    inputSchema: linkNoteToFeatureInputSchema,
+  },
+  async (params) => {
+    try {
+      const result = await executeLinkNoteToFeature(apiClient, params);
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(result, null, 2),
+          },
+        ],
+      };
+    } catch (error) {
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Error linking note to feature: ${
               error instanceof Error ? error.message : String(error)
             }`,
           },

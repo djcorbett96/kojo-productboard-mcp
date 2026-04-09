@@ -28,6 +28,12 @@ export const fetchNotesInputSchema = {
     .describe(
       'Optional date filter for notes created on or after this date. Supports relative dates like "past month", "past week", "past 7 days", "past 30 days", or absolute dates in ISO format like "2024-01-15". Examples: "past month", "past week", "past 7 days", "2024-01-15".'
     ),
+  state: z
+    .enum(["processed", "unprocessed"])
+    .optional()
+    .describe(
+      'Filter notes by processing state. Use "unprocessed" to find notes that have not been triaged yet.'
+    ),
   limit: z
     .number()
     .int()
@@ -49,7 +55,7 @@ export async function executeFetchNotes(
   client: ProductBoardApiClient,
   params: FetchNotesParams
 ): Promise<FetchNotesResult> {
-  const { tags, keywords, createdFrom, limit = DEFAULT_LIMIT } = params;
+  const { tags, keywords, createdFrom, state, limit = DEFAULT_LIMIT } = params;
 
   // Parse date filter if provided
   let createdFromDate: string | undefined;
@@ -67,6 +73,7 @@ export async function executeFetchNotes(
   const { notes: allNotes, totalFetched } = await fetchAllNotes(client, {
     keywords,
     tags,
+    state,
     createdFrom: createdFromDate,
     limit,
   });
