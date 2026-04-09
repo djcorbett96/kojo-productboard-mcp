@@ -1,0 +1,33 @@
+{
+  "name": "productboard-mcp",
+  "version": "1.0.0",
+  "description": "MCP server for interacting with ProductBoard API - fetch notes, filter by tags/keywords, and gather customer insights",
+  "main": "build/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc && chmod 755 build/index.js",
+    "start": "node build/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "files": [
+    "build"
+  ],
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "productboard",
+    "product-management",
+    "api"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.24.3",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "dotenv": "^17.2.3",
+    "typescript": "^5.9.3"
+  }
+}
